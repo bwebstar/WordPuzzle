@@ -37,6 +37,25 @@ function parseTextSearch(data) {
     rawLines = sanitizeArr(rawLines);
     rawWords = sanitizeArr(rawWords);
 
+	var newRawLines = [];
+
+	//   Needed output for rawLines
+	//   0: "'HASDF"
+	//   1: "'GEYBH"
+	//   2: "'JKLZX"
+	//   3: "'CVBLN"
+	//   4: "'GOODO'"
+
+
+	// Needs more work
+	var i;
+	for (i = 0; i < rawLines.length; i++) {
+		var line = "'" + rawLines[i] + "'";
+		newRawLines.push(line);
+	}
+
+	rawLines = newRawLines;
+
     if (rawLines.length > 0 && rawWords.length > 0) {
       var wsObject = {
         rows: rows,
@@ -91,18 +110,32 @@ Puzzle.prototype = {
     $("div#step1").slideUp();
 
     // read words
-    if (this.words.length != wsWords) {
-      this.words = wsWords;
-      $("span#wTotal").html(this.words.length);
-      rebuild = true;
-    }
+    // if (this.words.length != wsWords.length) {
+    //   this.words = wsWords;
+    //   $("span#wTotal").html(this.words.length);
+    //   rebuild = true;
+    // }
 
-    if (this.puzzle.length != wsGrid) {
-      this.puzzle = wsGrid;
-      rebuild = true;
-      this.rows = wsRows;
-      this.columns = wsColumns;
-    }
+    // if (this.puzzle.length != wsGrid.length) {
+    //   this.puzzle = wsGrid;
+    //   rebuild = true;
+    //   this.rows = wsRows;
+    //   this.columns = wsColumns.length-1;
+    // }
+
+	// read words
+    if (this.words.length != $("#words").val().split('\n').length) {
+		this.words = $("#words").val().split('\n');
+		$("span#wTotal").html(this.words.length);
+		rebuild = true;
+	  }
+
+	  if (this.puzzle.length != $("#puzzleText").val().split('\n').length) {
+		this.puzzle = $("#puzzleText").val().split('\'\n');
+		rebuild = true;
+		this.rows = this.puzzle.length;
+		this.columns = (this.puzzle[0].length-1);
+	  }
 
     // create table
     if (true == rebuild) {
